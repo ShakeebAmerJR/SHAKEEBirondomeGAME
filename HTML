@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Soccer Game</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #soccer-field {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background-color: #4CAF50;
+            border: 2px solid #000;
+        }
+
+        #ball {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #FF0000;
+            border-radius: 50%;
+        }
+        
+        #player {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #0000FF;
+            border-radius: 50%;
+            bottom: 0;
+        }
+
+        #restart-btn {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #008CBA;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="soccer-field">
+        <div id="ball"></div>
+        <div id="player"></div>
+    </div>
+
+    <button id="restart-btn">Restart Game</button>
+
+    <script>
+        // Ball and player elements
+        const ball = document.getElementById('ball');
+        const player = document.getElementById('player');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // Initial positions
+        let ballX = 300;
+        let ballY = 200;
+        let playerX = 275;
+
+        // Event listener for keyboard input
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft' && playerX > 0) {
+                playerX -= 10;
+            } else if (event.key === 'ArrowRight' && playerX < 550) {
+                playerX += 10;
+            }
+        });
+
+        // Event listener for restart button
+        restartBtn.addEventListener('click', function() {
+            resetGame();
+        });
+
+        // Game loop
+        function update() {
+            // Move the ball
+            ballY += 5;
+
+            // Update ball position
+            ball.style.left = ballX + 'px';
+            ball.style.top = ballY + 'px';
+
+            // Update player position
+            player.style.left = playerX + 'px';
+
+            // Check for collisions
+            if (ballY > 380 && ballX > playerX && ballX < playerX + 50) {
+                // Ball hits the player
+                alert('Goal!');
+                resetGame();
+            } else if (ballY > 400) {
+                // Ball goes out of bounds
+                alert('Missed!');
+                resetGame();
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // Function to reset the game
+        function resetGame() {
+            ballX = Math.random() * 550;
+            ballY = 0;
+        }
+
+        // Start the game loop
+        update();
+    </script>
+</body>
+</html>
